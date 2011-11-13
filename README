@@ -1,0 +1,15 @@
+                             _   
+ _ __  _   _ ___ _ __   ___ | |_ 
+| '_ \| | | / __| '_ \ / _ \| __|
+| |_) | |_| \__ \ |_) | (_) | |_ 
+| .__/ \__, |___/ .__/ \___/ \__|
+|_|    |___/    |_|              
+
+PySpot, a Python client for the SPOT Connect
+by Travis Goodspeed <travis at radiantmachines.com>
+
+
+This is a python library and client application for communicating with
+the SPOT Connect, a satellite beacon for the GlobalStar constellation.
+
+
