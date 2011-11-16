@@ -12,4 +12,8 @@ by Travis Goodspeed <travis at radiantmachines.com>
 This is a python library and client application for communicating with
 the SPOT Connect, a satellite beacon for the GlobalStar constellation.
 
+The protocol is similar to that described in Alexei Karpenko's
+article[1], but the transmitter and language are different.  Expect
+proper documentation soon.
 
+[1] http://natrium42.com/projects/spot/
