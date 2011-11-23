@@ -42,7 +42,6 @@ class SpotConnect:
             print "Connection failed. Retrying.";
             time.sleep(0.5);
             pass;
-      #sock.settimeout(2);  #IMPORTANT Must be patient.
       
       
       print "Connected to Device %i" % self.getid();
@@ -91,7 +90,10 @@ class SpotConnect:
          while len(data)<3:
             data=data+self.sock.recv(1024);
          try:
-            if data[0:2]=="\x41\x54\x2b": self.handleshell();
+            if data[0:2]=="\x41\x54\x2b":
+               print "Somehow we've got a Hayes shell."
+               print data;
+               sys.exit();
          except:
             pass;
          while len(data)<ord(data[1]) and longpacket:
@@ -131,35 +133,6 @@ class SpotConnect:
       if lon>180: lon=lon-360;
 
       return (lat,lon);
-   def dropshell(self):
-      """Use the '52 bug to drop an interactive shell."""
-      #This never returns enough bytes."
-      print "Trying mystery command 0x52 to drop a shell."
-      self.tx("\xaa\x03\x52",rx=False);
-      print "Setting 1 second timeout.";
-      self.sock.settimeout(1);
-      print "Waiting for timeout, then broadcasting.""";
-      for foo in range(0,10):
-         try:
-            self.tx("\xaa\x03\x01");
-            self.tx("\xaa\x03\x52",rx=False);
-            self.rx(longpacket=False);
-            self.tx("\xaa\x03\x01");
-            self.rx();
-         except:
-            print "Got the timeout!";
-      self.tx("\xaa\x03\x01");
-      self.rx();
-      print "If you got this far, there's probably no shell. :(";
-   def handleshell(self):
-      """Called by rx() when it recognizes a Hayes shell."""
-      while True:
-         try:
-            print self.rxstr();
-         except:
-            pass;
-         self.txstr(raw_input());
-
 def hex(str):
   """Returns the hex decoded version of a byte string."""
   toret="";
