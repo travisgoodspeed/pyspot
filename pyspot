@@ -9,13 +9,16 @@
 # principles are the same.  The verbs are different, and checksums may
 # be freely omitted.
 
-import bluetooth, sys, time;
+import bluetooth, sys, time, os;
 
+btaddr=os.environ.get("SPOTCONNECT");
 
 class SpotConnect:
    def __init__(self, btaddr=None):
       while btaddr==None or btaddr=="none":
          print "performing inquiry..."
+         print "This only works when Bluetooth LED is solid and device is discoverable."
+         print "Please set $SPOTCONNECT to the MAC address to avoid the search."
          nearby_devices = bluetooth.discover_devices(lookup_names = True)
          print "found %d devices" % len(nearby_devices)
          for addr, name in nearby_devices:
@@ -44,16 +47,6 @@ class SpotConnect:
       
       print "Connected to Device %i" % self.getid();
       
-      #print "Trying to send a transmission.";
-      #self.tx("\xAA\x0c\x00\x00\x3D\xDD\x85\xC6\xC5\x5D\x01\x00"); 
-      #while True:
-      #   print "Waiting forever.";
-      #   self.rx();
-      
-      #print "Connected to %s" % self.getinfo();
-      
-      #Buzz to indicate connection.
-      #self.buzz();
    def close(self):
       """Close the connection."""
       print "Disconnecting.";
@@ -123,8 +116,6 @@ class SpotConnect:
       if(len(data)!=0x0c):
          print "Error in coord values.";
          return (0,0);
-      #lat=data[3:6];
-      #lon=data[6:9];
       
       lat=0;
       lon=0;
@@ -177,9 +168,6 @@ def hex(str):
     toret="%s %02x" % (toret,ord(c));
   return toret;
 
-
-btaddr="00:80:e1:fb:db:97";
-#if len(sys.argv)>1: btaddr=sys.argv[1];
 
 sc=SpotConnect(btaddr);
 
