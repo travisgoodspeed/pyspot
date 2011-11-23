@@ -14,8 +14,6 @@ import bluetooth, sys, time;
 
 class SpotConnect:
    def __init__(self, btaddr=None):
-      self.CRC=CRC_CCITT();
-      
       while btaddr==None or btaddr=="none":
          print "performing inquiry..."
          nearby_devices = bluetooth.discover_devices(lookup_names = True)
@@ -82,11 +80,6 @@ class SpotConnect:
       return data;
    def tx(self,msg,rx=True):
       """Transmit a SpotConnect packet.  SFD, Length, and Checksum will be added."""
-      #Prepend SFD, length.
-      #msg="\x01"+chr(len(msg)+4)+msg;
-      #Append CRC.
-      #crc=self.CRC.checksum(msg);
-      #msg=msg+chr(crc&0xFF)+chr(crc>>8); #Little Endian
       
       if ord(msg[1])!=len(msg):
          print "Length mismatch, 0x%02x!=len(%s)." % (len(msg),msg);
@@ -175,40 +168,6 @@ class SpotConnect:
          except:
             pass;
          self.txstr(raw_input());
-class CRC_CCITT:
-   def __init__(self, inverted=True):
-      self.inverted=inverted;
-      self.tab=256*[[]]
-      for i in xrange(256):
-         crc=0
-         c = i << 8
-         for j in xrange(8):
-            if (crc ^ c) & 0x8000:
-               crc = ( crc << 1) ^ 0x1021
-            else:
-                  crc = crc << 1
-            c = c << 1
-            crc = crc & 0xffff
-         self.tab[i]=crc;
-   def update_crc(self, crc, c):
-      c=0x00ff & (c % 256)
-      if self.inverted: c=self.flip(c);
-      tmp = ((crc >> 8) ^ c) & 0xffff
-      crc = (((crc << 8) ^ self.tab[tmp])) & 0xffff
-      return crc;
-   def checksum(self,str):
-      """Returns the checksum of a string.""";
-      #crcval=0;
-      crcval=0xFFFF;
-      for c in str:
-        crcval=self.update_crc(crcval, ord(c));
-      return crcval;
-   def flip(self,c):
-      """Flips the bit order, because that's what Fossil wants."""
-      l=[0, 8, 4, 12, 2, 10, 6, 14, 1, 9, 5, 13, 3, 11, 7, 15];
-      return ((l[c&0x0F]) << 4) + l[(c & 0xF0) >> 4];
-   def test(self):
-      return True;
 
 def hex(str):
   """Returns the hex decoded version of a byte string."""
