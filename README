@@ -11,6 +11,8 @@ by Travis Goodspeed <travis at radiantmachines.com>
 
 This is a python library and client application for communicating with
 the SPOT Connect, a satellite beacon for the GlobalStar constellation.
+It expects the $SPOTCONNECT environment variable to be set to the MAC
+address, which you can find using 'hcitool scan'.
 
 The protocol is similar to that described in Alexei Karpenko's
 article[1], but the transmitter and language are different.  Expect
