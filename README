@@ -17,3 +17,12 @@ article[1], but the transmitter and language are different.  Expect
 proper documentation soon.
 
 [1] http://natrium42.com/projects/spot/
+
+All commands are in the form AALLVV[data] where AA is the 0xAA preamble,
+
+Verbs:
+0x01 -- Get 4-byte ID.
+0x25 -- Get last known coordinates.
+0x26 -- Send text message.
+0x40 -- Unknown.
+0x52 -- Unknown, probably a status update.

@@ -12,7 +12,7 @@
 # Verbs:
 # 0x01 -- Get 4-byte ID.
 # 0x25 -- Get Coordinates.
-# 0x2b -- Send text message.
+# 0x26 -- Send text message.
 # 0x40 -- Unknown.
 # 0x52 -- Unknown, probably a status update.
 
