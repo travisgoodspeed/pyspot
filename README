@@ -27,4 +27,5 @@ Verbs:
 0x25 -- Get last known coordinates.
 0x26 -- Send text message.
 0x40 -- Unknown.
+0x51 -- Start tracking mode.
 0x52 -- Unknown, probably a status update.

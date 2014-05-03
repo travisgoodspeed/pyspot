@@ -1,6 +1,7 @@
 #!/usr/bin/python
 # Quick an dirty SpotConnect client in Python for pybluez.
 # Written by Travis Goodspeed on--not for--the Nokia N900.
+# Extended by Richard Ulrich for tracking on ubuntu phone.
 
 # See Alexei Karpenko's article on reversing the SPOT.
 # http://natrium42.com/projects/spot/
@@ -15,7 +16,7 @@
 # 0x25 -- Get Coordinates.
 # 0x26 -- Send text message.
 # 0x40 -- Unknown.
-# 0x51 -- Probably to do with tracking.
+# 0x51 -- Start tracking mode.
 # 0x52 -- Unknown, probably a status update.
 
 
