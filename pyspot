@@ -1,6 +1,7 @@
 #!/usr/bin/python
 # Quick an dirty SpotConnect client in Python for pybluez.
 # Written by Travis Goodspeed on--not for--the Nokia N900.
+# Extended by Richard Ulrich for tracking on ubuntu phone.
 
 # See Alexei Karpenko's article on reversing the SPOT.
 # http://natrium42.com/projects/spot/
@@ -11,9 +12,11 @@
 
 # Verbs:
 # 0x01 -- Get 4-byte ID.
+# 0x10 -- Unknown. Used during startup.
 # 0x25 -- Get Coordinates.
 # 0x26 -- Send text message.
 # 0x40 -- Unknown.
+# 0x51 -- Start tracking mode.
 # 0x52 -- Unknown, probably a status update.
 
 
@@ -31,7 +34,7 @@ class SpotConnect:
          print "found %d devices" % len(nearby_devices)
          for addr, name in nearby_devices:
             print "  %s - '%s'" % (addr, name)
-            if name=='Connect_466':
+            if name=='Connect_466' or name=='Connect_603':
                btaddr=addr;
          print "Identified modem at %s" % btaddr;
 
@@ -68,6 +71,12 @@ class SpotConnect:
          print "Idling, if that's what 0x52 does.";
          self.tx("\xaa\x03\x52");
          self.rx();
+   def StartTracking(self):
+      """Enables tracking mode: 
+         The device sends the position to the server every 10 minutes."""
+      packet="\xaa\x04\x51\x0d"
+      print "Enabling tracking mode"
+      self.tx(packet)
    verbose=1;
    def txstr(self,msg):
       """Transmit normal ASCII.  Useful for modem mode."""
@@ -160,7 +169,10 @@ print "Last seen at %f, %f." % (lat,lon);
 
 
 if len(sys.argv)>1:
-   sc.checkin(sys.argv[1]);
+    if sys.argv[1] == 'track':
+        sc.StartTracking()
+    else:
+        sc.checkin(sys.argv[1]);
 else:
    #sc.tx("\xaa\x31\x26\x01\x00\x01\x00\x01Mr. Watson, come here. I want to see you.");
    print "Try giving argv[1] to send a message.";
